@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\data\\repos\\azureai-platform-accelerator\\SampleAgent\\SampleAgent.csproj": {}
+  },
+  "projects": {
+    "c:\\data\\repos\\azureai-platform-accelerator\\SampleAgent\\SampleAgent.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\data\\repos\\azureai-platform-accelerator\\SampleAgent\\SampleAgent.csproj",
+        "projectName": "SampleAgent",
+        "projectPath": "c:\\data\\repos\\azureai-platform-accelerator\\SampleAgent\\SampleAgent.csproj",
+        "packagesPath": "C:\\Users\\chthomp\\.nuget\\packages\\",
+        "outputPath": "c:\\data\\repos\\azureai-platform-accelerator\\SampleAgent\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\chthomp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Azure.AI.Inference": {
+              "target": "Package",
+              "version": "[1.0.0-beta.2, )"
+            },
+            "Azure.AI.OpenAI": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
+            "azure.identity": {
+              "target": "Package",
+              "version": "[1.13.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
