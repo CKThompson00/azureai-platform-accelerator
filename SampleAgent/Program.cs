@@ -21,17 +21,18 @@ string endpoint = GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string deploymentName = GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT_ID");  
 string searchEndpoint = GetEnvironmentVariable("AZURE_AI_SEARCH_ENDPOINT");  
 // string searchIndex = GetEnvironmentVariable("AZURE_AI_SEARCH_INDEX");  
-string searchIndex = "irs";
+string searchIndex = GetEnvironmentVariable("AZURE_AI_SEARCH_INDEX");
 string openAiApiKey = GetEnvironmentVariable("AZURE_OPENAI_KEY");  
 
 
 // Create a single instance of the AzureOpenAIClient to be shared across the application.
 builder.Services.AddSingleton<AzureOpenAIClient>((_) =>
 {
-    var endpoint = new Uri(builder.Configuration["AzureOpenAI:Endpoint"]!);
-    var credentials = new AzureKeyCredential(builder.Configuration["AzureOpenAI:ApiKey"]!);
-
-    var client = new AzureOpenAIClient(endpoint, credentials);
+    // var endpoint = new Uri(builder.Configuration["AzureOpenAI:Endpoint"]!);
+    // var credentials = new AzureKeyCredential(builder.Configuration["AzureOpenAI:ApiKey"]!);
+    var endpointURL = new Uri(endpoint);
+    var credentials = new AzureKeyCredential(openAiApiKey);
+    var client = new AzureOpenAIClient(endpointURL, credentials);
     return client;
 });
 
@@ -87,16 +88,25 @@ app.MapGet("/SearchLoans", async (string question) =>
     });
     options.Temperature = 0;
 
-    ChatCompletion completion = chatClient.CompleteChat(
-        [
-            new SystemChatMessage("You are a helpful assistant that understand information about the IRS and taxes.  Only reference and answer questions from the reference document.  Reply with I don't know if you do not have an answer."),
-            new UserChatMessage(question)
-        ],
-        options);
+    ChatCompletion completion;
+    ChatMessageContext onYourDataContext = null;
+    string answer = "";
 
-    ChatMessageContext onYourDataContext = completion.GetMessageContext();
+    while (answer == "" ||  answer == "The requested information is not found in the retrieved data. Please try another query or topic.")
+    {
+        Console.WriteLine("Attempting Question");
+        completion = chatClient.CompleteChat(
+            [
+                new SystemChatMessage("You are a helpful assistant that understand information about the IRS and taxes.  Only reference and answer questions from the reference document.  Reply with I don't know if you do not have an answer."),
+                new UserChatMessage(question)
+            ],
+            options);
 
-    string answer = completion.Content[0].Text;
+        onYourDataContext = completion.GetMessageContext();
+
+        answer = completion.Content[0].Text;      
+
+    }
 
     if (onYourDataContext?.Intent is not null)
     {
@@ -107,8 +117,8 @@ app.MapGet("/SearchLoans", async (string question) =>
     string decodedStr;
     foreach (ChatCitation citation in onYourDataContext?.Citations ?? [])
     {
-        Console.WriteLine($"Citation: {citation.Content}");
-        Console.WriteLine(citation.FilePath);
+        // Console.WriteLine($"Citation: {citation.Content}");
+        // Console.WriteLine(citation.FilePath);
 
         decodedStr = DecodeURL(citation.FilePath);
 
